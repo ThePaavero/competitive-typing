@@ -7,10 +7,26 @@
     min-height: 100px;
   }
 
-  .errors {
+  .status-wrapper {
 
     span {
       display: block;
     }
+  }
+
+  .good {
+    background-color: greenyellow;
+  }
+
+  .bad {
+    background-color: #ff484b;
+  }
+
+  .covered {
+    color: rgba(0, 0, 0, 1);
+  }
+
+  .untouched {
+    color: rgba(0, 0, 0, 0.5);
   }
 }

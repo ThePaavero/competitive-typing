@@ -1,4 +1,5 @@
 import React from 'react'
+// import _ from 'lodash'
 
 type GameFrameProps = {
   text: string,
@@ -6,6 +7,7 @@ type GameFrameProps = {
 
 type GameFrameState = {
   errorsRunning: number,
+  playerText: string,
   matchingTexts: boolean,
 }
 
@@ -16,6 +18,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
 
     this.state = {
       errorsRunning: 0,
+      playerText: '',
       matchingTexts: true,
     }
   }
@@ -25,35 +28,32 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     const masterText = this.props.text
     const masterTextToCheckAgainst = masterText.substring(0, playerText.length)
 
-    console.log('-------')
-    console.log(masterTextToCheckAgainst)
-    console.log(playerText)
-    console.log('-------')
-
     if (masterTextToCheckAgainst !== playerText) {
       this.setState({
         errorsRunning: this.state.errorsRunning + 1,
         matchingTexts: false,
+        playerText,
       })
     } else {
-      console.log('NICE!')
       this.setState({
         matchingTexts: true,
+        playerText,
       })
     }
   }
 
   renderText(): JSX.Element {
     return (
-      <div>
-        {this.props.text}
+      <div className={this.state.matchingTexts ? 'good' : 'bad'}>
+        <span className="covered">{this.state.playerText}</span>
+        <span className="untouched">{this.props.text.substring(this.state.playerText.length)}</span>
       </div>
     )
   }
 
   displayErrors(): JSX.Element {
     return (
-      <div className="errors">
+      <div className="status-wrapper">
         <span>Fucked up strokes: {this.state.errorsRunning}</span>
         <span>Current status: {this.state.matchingTexts ? 'Full match!' : 'Not matching'}</span>
       </div>

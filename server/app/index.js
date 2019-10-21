@@ -13,7 +13,10 @@ const port = 3030
 const state = {
   players: [],
   gameHasStarted: false,
+  currentText: '',
 }
+
+state.currentText = texts[1].string // @todo
 
 let runningPlayerNumber = 1
 
@@ -61,13 +64,13 @@ wss.on('connection', connection => {
         console.log(`Player "${getPlayerByConnection(connection).name}" marked as READY.`)
         broadcastNewPlayerData()
         if (state.gameHasStarted) {
-          broadcastNewText(texts[0].string, connection)
+          broadcastNewText(state.currentText, connection)
           return
         }
         if (!state.gameHasStarted && allPlayersAreReady()) {
           console.log('All players are ready!')
           state.gameHasStarted = true
-          broadcastNewText(texts[0].string)
+          broadcastNewText(state.currentText)
         }
         break
     }
