@@ -39,7 +39,8 @@ class App extends React.Component<AppProps, AppState> {
       messages: [],
       players: [],
       ready: false,
-      playerNameManuallySet: false,
+      // playerNameManuallySet: false,
+      playerNameManuallySet: true,
     }
 
     this.sendToServer = this.sendToServer.bind(this)
