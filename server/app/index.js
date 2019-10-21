@@ -76,8 +76,8 @@ const getPlayerByConnection = (connection) => {
 }
 
 const broadcastNewPlayerData = () => {
-  state.players.forEach(playerConnection => {
-    send(playerConnection.connection, {
+  state.players.forEach(playerObject => {
+    send(playerObject.connection, {
       type: 'UPDATE_PLAYERS',
       data: state.players.map(player => {
         return {
@@ -92,8 +92,8 @@ const broadcastNewPlayerData = () => {
 }
 
 const broadcastNewSentence = (sentence) => {
-  state.players.forEach(playerConnection => {
-    send(playerConnection.connection, {
+  state.players.forEach(playerObject => {
+    send(playerObject.connection, {
       type: 'SET_SENTENCE',
       data: sentence,
     })
