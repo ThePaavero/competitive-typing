@@ -32,9 +32,10 @@ class PlayerList extends React.Component<PlayerListProps> {
           <tbody>
           {
             this.props.players.map((player: PlayerObject): JSX.Element => {
+              const you = this.playerIsPlayer(player)
               return (
-                <tr key={player.name} className={this.playerIsPlayer(player) ? 'you' : ''}>
-                  <td>{player.name}</td>
+                <tr key={player.name} className={you ? 'you' : ''}>
+                  <td>{player.name}{you ? ' (YOU)' : ''}</td>
                   <td>{player.ready ? 'YES' : 'NO'}</td>
                   <td className="progress-cell">
                     <span style={{width: player.progress + '%'}}/>
