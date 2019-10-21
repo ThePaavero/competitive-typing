@@ -62,7 +62,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
   displayErrors(): JSX.Element {
     return (
       <div className="status-wrapper">
-        <span>Fucked up strokes: {this.state.errorsRunning}</span>
+        <span>Fuck-ups: {this.state.errorsRunning}</span>
         <span>Current status: {this.state.matchingTexts ? 'Full match!' : 'Not matching'}</span>
       </div>
     )

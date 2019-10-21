@@ -171,9 +171,6 @@ class App extends React.Component<AppProps, AppState> {
         <div className="players">
           <PlayerList players={this.state.players}/>
         </div>
-        <pre className='state-debug'>
-          {JSON.stringify(this.state, null, 2)}
-        </pre>
       </div>
     )
   }

@@ -77,6 +77,7 @@ wss.on('connection', connection => {
   })
 
   connection.on('close', () => {
+    console.log(`Player "${getPlayerByConnection(connection).name}" quit.`)
     state.players = state.players.filter(p => p.connection !== getPlayerByConnection(connection).connection)
     console.log('Players now online: ' + state.players.length)
     broadcastNewPlayerData()
