@@ -44,6 +44,7 @@ wss.on('connection', connection => {
   connection.on('message', msg => {
     msg = JSON.parse(msg)
     switch (msg.type) {
+
       case 'SET_PLAYER_NAME':
         if (playerNameExists(msg.data.trim())) {
           console.log('Duplicate player name, rejecting...')
@@ -54,6 +55,7 @@ wss.on('connection', connection => {
         getPlayerByConnection(connection).name = msg.data
         broadcastNewPlayerData()
         break
+
       case 'SET_READY':
         getPlayerByConnection(connection).ready = msg.data
         console.log(`Player "${getPlayerByConnection(connection).name}" marked as READY.`)
