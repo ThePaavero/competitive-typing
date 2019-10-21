@@ -6,7 +6,7 @@ type GameFrameProps = {
 
 type GameFrameState = {
   errorsRunning: number,
-  errorsCurrently: number,
+  matchingTexts: boolean,
 }
 
 class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
@@ -16,17 +16,30 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
 
     this.state = {
       errorsRunning: 0,
-      errorsCurrently: 0,
+      matchingTexts: true,
     }
   }
 
   onPlayerTextChange(e: any): void {
     const playerText = e.target.value
     const masterText = this.props.text
-
     const masterTextToCheckAgainst = masterText.substring(0, playerText.length)
-    if (masterTextToCheckAgainst.trim() !== playerText.trim()) {
-      this.setState({errorsRunning: this.state.errorsRunning + 1})
+
+    console.log('-------')
+    console.log(masterTextToCheckAgainst)
+    console.log(playerText)
+    console.log('-------')
+
+    if (masterTextToCheckAgainst !== playerText) {
+      this.setState({
+        errorsRunning: this.state.errorsRunning + 1,
+        matchingTexts: false,
+      })
+    } else {
+      console.log('NICE!')
+      this.setState({
+        matchingTexts: true,
+      })
     }
   }
 
@@ -42,7 +55,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     return (
       <div className="errors">
         <span>Fucked up strokes: {this.state.errorsRunning}</span>
-        <span>Errors: {this.state.errorsCurrently}</span>
+        <span>Current status: {this.state.matchingTexts ? 'Full match!' : 'Not matching'}</span>
       </div>
     )
   }
@@ -54,7 +67,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         <div className="server-text">
           {this.renderText()}
         </div>
-        <textarea onChange={this.onPlayerTextChange.bind(this)}/>
+        <textarea onChange={this.onPlayerTextChange.bind(this)} autoFocus/>
         {this.displayErrors()}
       </div>
     )
