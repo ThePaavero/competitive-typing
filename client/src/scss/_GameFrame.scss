@@ -1,10 +1,18 @@
 .GameFrame {
 
+  * {
+    box-sizing: border-box;
+  }
+
   textarea {
     display: block;
     width: 100%;
     padding: 10px;
-    min-height: 100px;
+    min-height: 50px;
+    margin: 20px 0;
+    font-family: monospace, Monospaced;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: blue;
   }
 
   .status-wrapper {
@@ -14,13 +22,19 @@
     }
   }
 
-  .good {
-    background-color: greenyellow;
+  .text-display {
+    padding: 20px;
+    font-family: monospace, Monospaced;
+
+    &.good {
+      background-color: greenyellow;
+    }
+
+    &.bad {
+      background-color: #ff484b;
+    }
   }
 
-  .bad {
-    background-color: #ff484b;
-  }
 
   .covered {
     color: rgba(0, 0, 0, 1);

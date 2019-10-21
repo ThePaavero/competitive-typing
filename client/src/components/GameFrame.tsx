@@ -44,7 +44,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
 
   renderText(): JSX.Element {
     return (
-      <div className={this.state.matchingTexts ? 'good' : 'bad'}>
+      <div className={'text-display ' + (this.state.matchingTexts ? 'good' : 'bad')}>
         <span className="covered">{this.state.playerText}</span>
         <span className="untouched">{this.props.text.substring(this.state.playerText.length)}</span>
       </div>
@@ -67,7 +67,9 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         <div className="server-text">
           {this.renderText()}
         </div>
-        <textarea onChange={this.onPlayerTextChange.bind(this)} autoFocus/>
+        <textarea
+          onChange={this.onPlayerTextChange.bind(this)}
+          autoFocus/>
         {this.displayErrors()}
       </div>
     )
