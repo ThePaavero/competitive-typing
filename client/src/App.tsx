@@ -150,10 +150,18 @@ class App extends React.Component<AppProps, AppState> {
     window.alert('YAY!') // @todo
   }
 
+  onProgressChange(progress: number): void {
+    this.sendToServer({
+      type: 'SET_PROGRESS',
+      data: progress,
+    })
+  }
+
   getGameFrame(): JSX.Element {
     return this.everyPlayerReady() ? (
       <GameFrame
         doOnDone={this.doOnDone.bind(this)}
+        onProgressChange={this.onProgressChange.bind(this)}
         text={this.state.text}/>
     ) : (
       <div className="waiting-for-players">

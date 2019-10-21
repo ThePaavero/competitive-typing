@@ -4,12 +4,15 @@ import React from 'react'
 type GameFrameProps = {
   text: string,
   doOnDone: Function,
+  onProgressChange: Function,
 }
 
 type GameFrameState = {
   errorsRunning: number,
   playerText: string,
   matchingTexts: boolean,
+  previousPlayerProgress: number,
+  playerProgress: number,
 }
 
 class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
@@ -20,6 +23,8 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     this.state = {
       errorsRunning: 0,
       playerText: '',
+      previousPlayerProgress: 0,
+      playerProgress: 0,
       matchingTexts: true,
     }
   }
@@ -28,6 +33,12 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     const playerText = e.target.value
     const masterText = this.props.text
     const masterTextToCheckAgainst = masterText.substring(0, playerText.length)
+    const playerProgress = Math.round(playerText.length / masterText.length * 100)
+
+    if (playerProgress > (this.state.previousPlayerProgress + 10)) {
+      this.setState({previousPlayerProgress: playerProgress})
+      this.props.onProgressChange(playerProgress)
+    }
 
     if (masterTextToCheckAgainst !== playerText) {
       this.setState({
@@ -39,6 +50,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
       this.setState({
         matchingTexts: true,
         playerText,
+        playerProgress,
       })
       if (playerText.length === masterText.length) {
         this.doOnDone()
@@ -59,7 +71,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     )
   }
 
-  displayErrors(): JSX.Element {
+  displayStatus(): JSX.Element {
     return (
       <div className="status-wrapper">
         <span>Fuck-ups: {this.state.errorsRunning}</span>
@@ -78,7 +90,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         <textarea
           onChange={this.onPlayerTextChange.bind(this)}
           autoFocus/>
-        {this.displayErrors()}
+        {this.displayStatus()}
       </div>
     )
   }

@@ -73,6 +73,11 @@ wss.on('connection', connection => {
           broadcastNewText(state.currentText)
         }
         break
+
+      case 'SET_PROGRESS':
+        getPlayerByConnection(connection).progress = msg.data
+        broadcastNewPlayerData()
+        break
     }
   })
 
