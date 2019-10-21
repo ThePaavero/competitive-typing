@@ -8,6 +8,7 @@ type GameFrameProps = {
 }
 
 type GameFrameState = {
+  freezeTextarea: boolean,
   errorsRunning: number,
   playerText: string,
   matchingTexts: boolean,
@@ -21,6 +22,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     super(props)
 
     this.state = {
+      freezeTextarea: false,
       errorsRunning: 0,
       playerText: '',
       previousPlayerProgress: 0,
@@ -30,6 +32,13 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
   }
 
   onPlayerTextChange(e: any): void {
+    if (this.state.playerProgress > 99) {
+      console.warn('Already done, will not register input.')
+      this.setState({
+        freezeTextarea: true,
+      })
+      return
+    }
     const playerText = e.target.value
     const masterText = this.props.text
     const masterTextToCheckAgainst = masterText.substring(0, playerText.length)
@@ -86,9 +95,10 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         <div className="server-text">
           {this.renderText()}
         </div>
-        <textarea
+        {this.state.freezeTextarea ? null : <textarea
+          disabled={this.state.freezeTextarea}
           onChange={this.onPlayerTextChange.bind(this)}
-          autoFocus/>
+          autoFocus/>}
         {this.displayStatus()}
       </div>
     )
