@@ -3,6 +3,7 @@ import React from 'react'
 
 type GameFrameProps = {
   text: string,
+  doOnDone: Function,
 }
 
 type GameFrameState = {
@@ -39,7 +40,14 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         matchingTexts: true,
         playerText,
       })
+      if (playerText.length === masterText.length) {
+        this.doOnDone()
+      }
     }
+  }
+
+  doOnDone(): any {
+    this.props.doOnDone()
   }
 
   renderText(): JSX.Element {

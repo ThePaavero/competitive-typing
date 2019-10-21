@@ -146,9 +146,15 @@ class App extends React.Component<AppProps, AppState> {
     return this.state.players.filter((player: PlayerObject) => !player.ready).length < 1
   }
 
+  doOnDone() {
+    window.alert('YAY!') // @todo
+  }
+
   getGameFrame(): JSX.Element {
     return this.everyPlayerReady() ? (
-      <GameFrame text={this.state.text}/>
+      <GameFrame
+        doOnDone={this.doOnDone.bind(this)}
+        text={this.state.text}/>
     ) : (
       <div className="waiting-for-players">
         Waiting for all players to be ready...
