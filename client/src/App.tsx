@@ -12,6 +12,8 @@ type PlayerObject = {
   ready: boolean,
   name: string,
   progress: number,
+  done: boolean,
+  doneTimestamp: number,
 }
 
 type AppState = {
@@ -124,7 +126,11 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   promptForName() {
-    const playerName: string | null = window.prompt('Enter player name')
+    const playerName: string | null = window.prompt('Enter player name', '')
+    if (!playerName || playerName.trim() === '') {
+      this.promptForName()
+      return
+    }
     this.sendToServer({
       type: 'SET_PLAYER_NAME',
       data: playerName
@@ -151,7 +157,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   doOnDone() {
-    window.alert('YAY!') // @todo
+    console.log('DONE! @todo Do something?')
   }
 
   onProgressChange(progress: number): void {

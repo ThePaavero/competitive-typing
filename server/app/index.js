@@ -31,6 +31,8 @@ wss.on('connection', connection => {
     name: playerName,
     progress: 0,
     ready: false,
+    done: false,
+    doneTimestamp: null,
   }
 
   state.players.push(playerObject)
@@ -44,6 +46,8 @@ wss.on('connection', connection => {
     data: 'You are connected. Welcome!'
   })
 
+  const player = getPlayerByConnection(connection)
+
   connection.on('message', msg => {
     msg = JSON.parse(msg)
     switch (msg.type) {
@@ -54,14 +58,14 @@ wss.on('connection', connection => {
           send(connection, {type: 'ERROR_DUPLICATE_NAME'})
           return
         }
-        console.log('Setting player name from "' + (getPlayerByConnection(connection).name) + '" to "' + msg.data + '"')
-        getPlayerByConnection(connection).name = msg.data
+        console.log('Setting player name from "' + (player.name) + '" to "' + msg.data + '"')
+        player.name = msg.data
         broadcastNewPlayerData()
         break
 
       case 'SET_READY':
-        getPlayerByConnection(connection).ready = msg.data
-        console.log(`Player "${getPlayerByConnection(connection).name}" marked as READY.`)
+        player.ready = msg.data
+        console.log(`Player "${player.name}" marked as READY.`)
         broadcastNewPlayerData()
         if (state.gameHasStarted) {
           broadcastNewText(state.currentText, connection)
@@ -75,15 +79,20 @@ wss.on('connection', connection => {
         break
 
       case 'SET_PROGRESS':
-        getPlayerByConnection(connection).progress = msg.data
+        player.progress = msg.data
+        if (msg.data > 99) {
+          player.done = true
+          player.doneTimestamp = new Date().getTime()
+
+        }
         broadcastNewPlayerData()
         break
     }
   })
 
   connection.on('close', () => {
-    console.log(`Player "${getPlayerByConnection(connection).name}" quit.`)
-    state.players = state.players.filter(p => p.connection !== getPlayerByConnection(connection).connection)
+    console.log(`Player "${player.name}" quit.`)
+    state.players = state.players.filter(p => p.connection !== player.connection)
     console.log('Players now online: ' + state.players.length)
     broadcastNewPlayerData()
   })
@@ -110,6 +119,8 @@ const broadcastNewPlayerData = () => {
           name: player.name,
           progress: player.progress,
           ready: player.ready,
+          done: player.done,
+          doneTimestamp: player.doneTimestamp,
         }
       }),
     })
