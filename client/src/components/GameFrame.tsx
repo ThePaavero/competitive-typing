@@ -35,11 +35,6 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     const masterTextToCheckAgainst = masterText.substring(0, playerText.length)
     const playerProgress = Math.round(playerText.length / masterText.length * 100)
 
-    if (playerProgress > (this.state.previousPlayerProgress + 10)) {
-      this.setState({previousPlayerProgress: playerProgress})
-      this.props.onProgressChange(playerProgress)
-    }
-
     if (masterTextToCheckAgainst !== playerText) {
       this.setState({
         errorsRunning: this.state.errorsRunning + 1,
@@ -52,6 +47,10 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         playerText,
         playerProgress,
       })
+      if (playerProgress > (this.state.previousPlayerProgress + 10)) {
+        this.setState({previousPlayerProgress: playerProgress})
+        this.props.onProgressChange(playerProgress)
+      }
       if (playerText.length === masterText.length) {
         this.doOnDone()
       }
