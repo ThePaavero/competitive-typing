@@ -21,6 +21,7 @@ type AppState = {
   connection: any,
   ready: boolean,
   playerNameManuallySet: boolean,
+  playerName: string | null,
 }
 
 type ServerEvent = {
@@ -39,8 +40,8 @@ class App extends React.Component<AppProps, AppState> {
       messages: [],
       players: [],
       ready: false,
-      // playerNameManuallySet: false,
-      playerNameManuallySet: true,
+      playerNameManuallySet: false,
+      playerName: '',
     }
 
     this.sendToServer = this.sendToServer.bind(this)
@@ -123,12 +124,15 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   promptForName() {
-    const playerName = window.prompt('Enter player name')
+    const playerName: string | null = window.prompt('Enter player name')
     this.sendToServer({
       type: 'SET_PLAYER_NAME',
       data: playerName
     })
-    this.setState({playerNameManuallySet: true})
+    this.setState({
+      playerNameManuallySet: true,
+      playerName,
+    })
   }
 
   getSetPlayerNameButton(): JSX.Element | null {
@@ -177,7 +181,7 @@ class App extends React.Component<AppProps, AppState> {
         {this.getSetPlayerNameButton()}
         {this.getGameFrame()}
         <div className="players">
-          <PlayerList players={this.state.players}/>
+          <PlayerList players={this.state.players} playerName={this.state.playerName}/>
         </div>
       </div>
     )

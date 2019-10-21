@@ -2,6 +2,7 @@ import React from 'react'
 
 interface PlayerListProps {
   players: Array<PlayerObject>
+  playerName: string | null
 }
 
 type PlayerObject = {
@@ -11,6 +12,10 @@ type PlayerObject = {
 }
 
 class PlayerList extends React.Component<PlayerListProps> {
+
+  playerIsPlayer(player: PlayerObject): boolean {
+    return this.props.playerName === player.name
+  }
 
   render(): JSX.Element {
     return (
@@ -28,10 +33,13 @@ class PlayerList extends React.Component<PlayerListProps> {
           {
             this.props.players.map((player: PlayerObject): JSX.Element => {
               return (
-                <tr key={player.name}>
+                <tr key={player.name} className={this.playerIsPlayer(player) ? 'you' : ''}>
                   <td>{player.name}</td>
                   <td>{player.ready ? 'YES' : 'NO'}</td>
-                  <td>{player.progress}</td>
+                  <td className="progress-cell">
+                    <span style={{width: player.progress + '%'}}/>
+                    {player.progress}%
+                  </td>
                 </tr>
               )
             })
