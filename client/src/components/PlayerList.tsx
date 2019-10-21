@@ -12,10 +12,6 @@ type PlayerObject = {
 
 class PlayerList extends React.Component<PlayerListProps> {
 
-  constructor(props: PlayerListProps) {
-    super(props)
-  }
-
   render(): JSX.Element {
     return (
       <div className="PlayerList">

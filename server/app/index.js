@@ -47,10 +47,7 @@ wss.on('connection', connection => {
       case 'SET_PLAYER_NAME':
         if (playerNameExists(msg.data.trim())) {
           console.log('Duplicate player name, rejecting...')
-          send(connection, {
-            type: 'ERROR_MESSAGE',
-            data: 'Player name is already taken, please choose another one.'
-          })
+          send(connection, {type: 'ERROR_DUPLICATE_NAME'})
           return
         }
         console.log('Setting player name from "' + (getPlayerByConnection(connection).name) + '" to "' + msg.data + '"')
@@ -61,6 +58,10 @@ wss.on('connection', connection => {
         getPlayerByConnection(connection).ready = msg.data
         console.log(`Player "${getPlayerByConnection(connection).name}" marked as READY.`)
         broadcastNewPlayerData()
+        if (state.gameHasStarted) {
+          broadcastNewSentence(sentences[0].string, connection)
+          return
+        }
         if (!state.gameHasStarted && allPlayersAreReady()) {
           console.log('All players are ready!')
           state.gameHasStarted = true
@@ -105,7 +106,15 @@ const broadcastNewPlayerData = () => {
   })
 }
 
-const broadcastNewSentence = (sentence) => {
+const broadcastNewSentence = (sentence, singlePlayerConnection = null) => {
+  if (singlePlayerConnection) {
+    console.log(`Broadcasting new sentence to player "${getPlayerByConnection(singlePlayerConnection).name}".`)
+    send(singlePlayerConnection, {
+      type: 'SET_SENTENCE',
+      data: sentence,
+    })
+    return
+  }
   console.log(`Broadcasting new sentence to ${state.players.length} players.`)
   state.players.forEach(playerObject => {
     send(playerObject.connection, {

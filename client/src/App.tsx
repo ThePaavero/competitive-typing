@@ -78,8 +78,8 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({messages: this.state.messages})
         break
 
-      case 'ERROR_MESSAGE':
-        window.alert('ERROR:\n\n' + payload.data.trim())
+      case 'ERROR_DUPLICATE_NAME':
+        window.alert('ERROR:\n\nName is already taken. Please try again.')
         this.promptForName()
         return
 
