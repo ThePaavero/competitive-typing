@@ -12,6 +12,7 @@ const port = 3030
 
 const state = {
   players: [],
+  gameHasStarted: false,
 }
 
 let runningPlayerNumber = 1
@@ -47,7 +48,6 @@ wss.on('connection', connection => {
 
   connection.on('message', msg => {
     msg = JSON.parse(msg)
-    console.log(msg)
     switch (msg.type) {
       case 'SET_PLAYER_NAME':
         console.log('Setting player name to "' + msg.data + '"')
@@ -57,6 +57,10 @@ wss.on('connection', connection => {
       case 'SET_READY':
         getPlayerByConnection(connection).ready = msg.data
         broadcastNewPlayerData()
+        if (!state.gameHasStarted && allPlayersAreReady()) {
+          state.gameHasStarted = true
+
+        }
         break
     }
   })
@@ -67,6 +71,10 @@ wss.on('connection', connection => {
     broadcastNewPlayerData()
   })
 })
+
+const allPlayersAreReady = () => {
+  return state.players.filter(player => player.ready).length === state.players.length
+}
 
 const getPlayerByConnection = (connection) => {
   return state.players.find(p => p.connection === connection)

@@ -1,6 +1,7 @@
 import React from 'react'
 import './App.scss'
 import GameFrame from './components/GameFrame'
+import PlayerList from './components/PlayerList'
 
 const url = 'ws://localhost:3030'
 
@@ -9,6 +10,7 @@ type AppProps = {}
 type PlayerObject = {
   connection: object,
   ready: boolean,
+  name: string,
   points: number,
 }
 
@@ -49,6 +51,11 @@ class App extends React.Component<AppProps, AppState> {
 
     connection.onerror = (e: any): any => {
       console.warn(e)
+    }
+
+    connection.onclose = (e: any): any => {
+      window.alert('Server was restarted, session lost. Refreshing.')
+      window.location.reload(true)
     }
 
     connection.onmessage = (event: ServerEvent): void => {
@@ -98,15 +105,18 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   getReadyButton(): JSX.Element | null {
+    if (this.state.ready) {
+      return null
+    }
     return (
       <button onClick={() => {
-        this.setState({ready: !this.state.ready})
+        this.setState({ready: true})
         this.sendToServer({
           type: 'SET_READY',
-          data: !this.state.ready // setState didn't set it? :/
+          data: true,
         })
       }}>
-        {this.state.ready ? 'Not ready!' : 'Ready!'}
+        Ready!
       </button>
     )
   }
@@ -144,11 +154,10 @@ class App extends React.Component<AppProps, AppState> {
       <div className="App">
         {this.getReadyButton()}
         {this.getSetPlayerNameButton()}
-        <header>
-          {this.state.players.length} players online
-          ({this.state.players.filter((p: PlayerObject) => p.ready).length} ready to go).
-        </header>
         {this.getGameFrame()}
+        <div className="players">
+          <PlayerList players={this.state.players}/>
+        </div>
         <pre className='state-debug'>
           {JSON.stringify(this.state, null, 2)}
         </pre>
