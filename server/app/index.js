@@ -51,6 +51,7 @@ wss.on('connection', connection => {
         break
       case 'SET_READY':
         getPlayerByConnection(connection).ready = msg.data
+        console.log(`Player "${getPlayerByConnection(connection).name}" marked as READY.`)
         broadcastNewPlayerData()
         if (!state.gameHasStarted && allPlayersAreReady()) {
           state.gameHasStarted = true
@@ -92,6 +93,7 @@ const broadcastNewPlayerData = () => {
 }
 
 const broadcastNewSentence = (sentence) => {
+  console.log(`Broadcasting new sentence to ${state.players.length} players.`)
   state.players.forEach(playerObject => {
     send(playerObject.connection, {
       type: 'SET_SENTENCE',
