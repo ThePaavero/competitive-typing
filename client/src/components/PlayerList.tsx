@@ -7,7 +7,7 @@ interface PlayerListProps {
 type PlayerObject = {
   ready: boolean,
   name: string,
-  points: number,
+  progress: number,
 }
 
 class PlayerList extends React.Component<PlayerListProps> {
@@ -21,7 +21,7 @@ class PlayerList extends React.Component<PlayerListProps> {
           <tr>
             <th>Name</th>
             <th>Ready</th>
-            <th>Points</th>
+            <th>Progress</th>
           </tr>
           </thead>
           <tbody>
@@ -31,7 +31,7 @@ class PlayerList extends React.Component<PlayerListProps> {
                 <tr key={player.name}>
                   <td>{player.name}</td>
                   <td>{player.ready ? 'YES' : 'NO'}</td>
-                  <td>{player.points}</td>
+                  <td>{player.progress}</td>
                 </tr>
               )
             })

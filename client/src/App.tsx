@@ -11,7 +11,7 @@ type PlayerObject = {
   connection: object,
   ready: boolean,
   name: string,
-  points: number,
+  progress: number,
 }
 
 type AppState = {

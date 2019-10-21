@@ -2,6 +2,7 @@ const websocket = require('ws')
 const http = require('http')
 const express = require('express')
 const texts = require('./../data/texts')
+const rooms = require('./../data/rooms')
 const app = express()
 const server = http.createServer(app)
 
@@ -28,8 +29,7 @@ wss.on('connection', connection => {
   const playerObject = {
     connection,
     name: playerName,
-    points: 0,
-    wpm: 0,
+    progress: 0,
     ready: false,
   }
 
@@ -103,8 +103,7 @@ const broadcastNewPlayerData = () => {
       data: state.players.map(player => {
         return {
           name: player.name,
-          points: player.points,
-          wpm: player.wpm,
+          progress: player.progress,
           ready: player.ready,
         }
       }),

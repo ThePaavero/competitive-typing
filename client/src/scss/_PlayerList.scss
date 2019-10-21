@@ -1,0 +1,28 @@
+.PlayerList {
+
+  * {
+    box-sizing: border-box;
+  }
+
+  table {
+    width: 100%;
+
+    th {
+      text-align: left;
+    }
+
+    td {
+      &:nth-child(1) {
+        width: 20%;
+      }
+
+      &:nth-child(2) {
+        width: 20%;
+      }
+
+      &:nth-child(3) {
+        width: 100%;
+      }
+    }
+  }
+}

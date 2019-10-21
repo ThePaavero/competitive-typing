@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "abc123",
+    "title": "Test Room (Finnish)",
+    "amountOfPlayers": 2,
+    "language": "FI"
+  },
+  {
+    "slug": "xyz123",
+    "title": "Test Room (English)",
+    "amountOfPlayers": 3,
+    "language": "EN"
+  }
+]
