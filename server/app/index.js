@@ -54,6 +54,7 @@ wss.on('connection', connection => {
         console.log(`Player "${getPlayerByConnection(connection).name}" marked as READY.`)
         broadcastNewPlayerData()
         if (!state.gameHasStarted && allPlayersAreReady()) {
+          console.log('All players are ready!')
           state.gameHasStarted = true
           broadcastNewSentence(sentences[0].string)
         }

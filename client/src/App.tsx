@@ -20,6 +20,7 @@ type AppState = {
   players: Array<PlayerObject>,
   connection: any,
   ready: boolean,
+  playerNameManuallySet: boolean,
 }
 
 type ServerEvent = {
@@ -38,6 +39,7 @@ class App extends React.Component<AppProps, AppState> {
       messages: [],
       players: [],
       ready: false,
+      playerNameManuallySet: false,
     }
 
     this.sendToServer = this.sendToServer.bind(this)
@@ -61,13 +63,6 @@ class App extends React.Component<AppProps, AppState> {
     connection.onmessage = (event: ServerEvent): void => {
       this.handleMessageFromServer(event.data)
     }
-
-    document.addEventListener('beforeunload', (e) => {
-      if (!window.confirm('Are you sure you want to quit?')) {
-        e.preventDefault()
-      }
-      connection.close()
-    })
   }
 
   handleMessageFromServer(event: string): void {
@@ -105,7 +100,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   getReadyButton(): JSX.Element | null {
-    if (this.state.ready) {
+    if (this.state.ready || !this.state.playerNameManuallySet) {
       return null
     }
     return (
@@ -121,7 +116,10 @@ class App extends React.Component<AppProps, AppState> {
     )
   }
 
-  getSetPlayerNameButton(): JSX.Element {
+  getSetPlayerNameButton(): JSX.Element | null {
+    if (this.state.playerNameManuallySet) {
+      return null
+    }
     return (
       <button onClick={() => {
         const playerName = window.prompt('Enter player name')
@@ -129,6 +127,7 @@ class App extends React.Component<AppProps, AppState> {
           type: 'SET_PLAYER_NAME',
           data: playerName
         })
+        this.setState({playerNameManuallySet: true})
       }}>
         Set player name
       </button>
