@@ -1,11 +1,11 @@
 import React from 'react'
 
 type GameFrameProps = {
-  sentence: string,
+  text: string,
 }
 
 type GameFrameState = {
-  sentence: string,
+  text: string,
 }
 
 class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
@@ -14,14 +14,14 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     super(props)
 
     this.state = {
-      sentence: '',
+      text: '',
     }
   }
 
-  renderSentence(): JSX.Element {
+  renderText(): JSX.Element {
     return (
       <div>
-        {this.props.sentence}
+        {this.props.text}
       </div>
     )
   }
@@ -30,8 +30,8 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     return (
       <div className="GameFrame">
         <h1>Game is on:</h1>
-        <div className="sentence">
-          {this.renderSentence()}
+        <div className="text">
+          {this.renderText()}
         </div>
       </div>
     )

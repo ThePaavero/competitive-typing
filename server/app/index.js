@@ -1,7 +1,7 @@
 const websocket = require('ws')
 const http = require('http')
 const express = require('express')
-const sentences = require('./../data/sentences')
+const texts = require('./../data/texts')
 const app = express()
 const server = http.createServer(app)
 
@@ -59,13 +59,13 @@ wss.on('connection', connection => {
         console.log(`Player "${getPlayerByConnection(connection).name}" marked as READY.`)
         broadcastNewPlayerData()
         if (state.gameHasStarted) {
-          broadcastNewSentence(sentences[0].string, connection)
+          broadcastNewText(texts[0].string, connection)
           return
         }
         if (!state.gameHasStarted && allPlayersAreReady()) {
           console.log('All players are ready!')
           state.gameHasStarted = true
-          broadcastNewSentence(sentences[0].string)
+          broadcastNewText(texts[0].string)
         }
         break
     }
@@ -106,20 +106,20 @@ const broadcastNewPlayerData = () => {
   })
 }
 
-const broadcastNewSentence = (sentence, singlePlayerConnection = null) => {
+const broadcastNewText = (text, singlePlayerConnection = null) => {
   if (singlePlayerConnection) {
-    console.log(`Broadcasting new sentence to player "${getPlayerByConnection(singlePlayerConnection).name}".`)
+    console.log(`Broadcasting new text to player "${getPlayerByConnection(singlePlayerConnection).name}".`)
     send(singlePlayerConnection, {
-      type: 'SET_SENTENCE',
-      data: sentence,
+      type: 'SET_TEXT',
+      data: text,
     })
     return
   }
-  console.log(`Broadcasting new sentence to ${state.players.length} players.`)
+  console.log(`Broadcasting new text to ${state.players.length} players.`)
   state.players.forEach(playerObject => {
     send(playerObject.connection, {
-      type: 'SET_SENTENCE',
-      data: sentence,
+      type: 'SET_TEXT',
+      data: text,
     })
   })
 }

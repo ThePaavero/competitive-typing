@@ -15,7 +15,7 @@ type PlayerObject = {
 }
 
 type AppState = {
-  sentence: string,
+  text: string,
   messages: Array<string>,
   players: Array<PlayerObject>,
   connection: any,
@@ -35,7 +35,7 @@ class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       connection: null,
-      sentence: '',
+      text: '',
       messages: [],
       players: [],
       ready: false,
@@ -69,8 +69,8 @@ class App extends React.Component<AppProps, AppState> {
     const payload = JSON.parse(event)
 
     switch (payload.type) {
-      case 'SET_SENTENCE':
-        this.setState({sentence: payload.data})
+      case 'SET_TEXT':
+        this.setState({text: payload.data})
         break
 
       case 'MESSAGE':
@@ -147,7 +147,7 @@ class App extends React.Component<AppProps, AppState> {
 
   getGameFrame(): JSX.Element {
     return this.everyPlayerReady() ? (
-      <GameFrame sentence={this.state.sentence}/>
+      <GameFrame text={this.state.text}/>
     ) : (
       <div className="waiting-for-players">
         Waiting for all players to be ready...
