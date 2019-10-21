@@ -45,6 +45,14 @@ wss.on('connection', connection => {
     msg = JSON.parse(msg)
     switch (msg.type) {
       case 'SET_PLAYER_NAME':
+        if (playerNameExists(msg.data.trim())) {
+          console.log('Duplicate player name, rejecting...')
+          send(connection, {
+            type: 'ERROR_MESSAGE',
+            data: 'Player name is already taken, please choose another one.'
+          })
+          return
+        }
         console.log('Setting player name from "' + (getPlayerByConnection(connection).name) + '" to "' + msg.data + '"')
         getPlayerByConnection(connection).name = msg.data
         broadcastNewPlayerData()
@@ -68,6 +76,10 @@ wss.on('connection', connection => {
     broadcastNewPlayerData()
   })
 })
+
+const playerNameExists = (name) => {
+  return state.players.filter(p => p.name === name).length > 0
+}
 
 const allPlayersAreReady = () => {
   return state.players.filter(player => player.ready).length === state.players.length

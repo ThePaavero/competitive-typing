@@ -78,6 +78,11 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({messages: this.state.messages})
         break
 
+      case 'ERROR_MESSAGE':
+        window.alert('ERROR:\n\n' + payload.data.trim())
+        this.promptForName()
+        return
+
       case 'UPDATE_PLAYERS':
         this.setState({players: payload.data})
         break
@@ -116,19 +121,21 @@ class App extends React.Component<AppProps, AppState> {
     )
   }
 
+  promptForName() {
+    const playerName = window.prompt('Enter player name')
+    this.sendToServer({
+      type: 'SET_PLAYER_NAME',
+      data: playerName
+    })
+    this.setState({playerNameManuallySet: true})
+  }
+
   getSetPlayerNameButton(): JSX.Element | null {
     if (this.state.playerNameManuallySet) {
       return null
     }
     return (
-      <button onClick={() => {
-        const playerName = window.prompt('Enter player name')
-        this.sendToServer({
-          type: 'SET_PLAYER_NAME',
-          data: playerName
-        })
-        this.setState({playerNameManuallySet: true})
-      }}>
+      <button onClick={this.promptForName.bind(this)}>
         Set player name
       </button>
     )

@@ -29,7 +29,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
   render(): JSX.Element {
     return (
       <div className="GameFrame">
-        [GAME FRAME]
+        <h1>Game is on:</h1>
         <div className="sentence">
           {this.renderSentence()}
         </div>
