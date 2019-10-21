@@ -6,6 +6,7 @@ type GameFrameProps = {
 
 type GameFrameState = {
   text: string,
+  playerText: string,
 }
 
 class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
@@ -15,7 +16,13 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
 
     this.state = {
       text: '',
+      playerText: '',
     }
+  }
+
+  onPlayerTextChange(e: any) {
+    console.log(e.target.value)
+    return
   }
 
   renderText(): JSX.Element {
@@ -30,9 +37,10 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     return (
       <div className="GameFrame">
         <h1>Game is on:</h1>
-        <div className="text">
+        <div className="server-text">
           {this.renderText()}
         </div>
+        <textarea onChange={this.onPlayerTextChange.bind(this)}/>
       </div>
     )
   }
