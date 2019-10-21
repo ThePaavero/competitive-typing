@@ -19,6 +19,7 @@ class PlayerList extends React.Component<PlayerListProps> {
   render(): JSX.Element {
     return (
       <div className="PlayerList">
+        <h2>{this.props.players.length} players online</h2>
         <table>
           <thead>
           <tr>
@@ -41,7 +42,6 @@ class PlayerList extends React.Component<PlayerListProps> {
           }
           </tbody>
         </table>
-        {this.props.players.length} players online
       </div>
     )
   }

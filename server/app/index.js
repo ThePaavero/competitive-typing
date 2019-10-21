@@ -37,11 +37,6 @@ wss.on('connection', connection => {
   broadcastNewPlayerData()
 
   send(connection, {
-    type: 'SET_SENTENCE',
-    data: sentences[0].string,
-  })
-
-  send(connection, {
     type: 'MESSAGE',
     data: 'You are connected. Welcome!'
   })
@@ -50,7 +45,7 @@ wss.on('connection', connection => {
     msg = JSON.parse(msg)
     switch (msg.type) {
       case 'SET_PLAYER_NAME':
-        console.log('Setting player name to "' + msg.data + '"')
+        console.log('Setting player name from "' + (getPlayerByConnection(connection).name) + '" to "' + msg.data + '"')
         getPlayerByConnection(connection).name = msg.data
         broadcastNewPlayerData()
         break
@@ -59,7 +54,7 @@ wss.on('connection', connection => {
         broadcastNewPlayerData()
         if (!state.gameHasStarted && allPlayersAreReady()) {
           state.gameHasStarted = true
-
+          broadcastNewSentence(sentences[0].string)
         }
         break
     }
@@ -92,6 +87,15 @@ const broadcastNewPlayerData = () => {
           ready: player.ready,
         }
       }),
+    })
+  })
+}
+
+const broadcastNewSentence = (sentence) => {
+  state.players.forEach(playerConnection => {
+    send(playerConnection.connection, {
+      type: 'SET_SENTENCE',
+      data: sentence,
     })
   })
 }
