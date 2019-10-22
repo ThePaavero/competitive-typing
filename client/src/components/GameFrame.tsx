@@ -13,7 +13,6 @@ type GameFrameState = {
   errorsRunning: number,
   playerText: string,
   matchingTexts: boolean,
-  previousPlayerProgress: number,
   playerProgress: number,
 }
 
@@ -26,7 +25,6 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
       freezeTextarea: false,
       errorsRunning: 0,
       playerText: '',
-      previousPlayerProgress: 0,
       playerProgress: 0,
       matchingTexts: true,
     }
@@ -58,10 +56,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         playerText,
         playerProgress,
       })
-      if (playerProgress > (this.state.previousPlayerProgress + 10)) {
-        this.setState({previousPlayerProgress: playerProgress})
-        this.props.onProgressChange(playerProgress)
-      }
+      this.props.onProgressChange(playerProgress)
       if (playerText.length === masterText.length) {
         this.doOnDone()
       }
