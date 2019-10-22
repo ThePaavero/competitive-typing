@@ -5,6 +5,7 @@ type GameFrameProps = {
   text: string,
   doOnDone: Function,
   onProgressChange: Function,
+  sendFuckupToServer: Function,
 }
 
 type GameFrameState = {
@@ -50,6 +51,7 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
         matchingTexts: false,
         playerText,
       })
+      this.props.sendFuckupToServer(this.state.errorsRunning + 1)
     } else {
       this.setState({
         matchingTexts: true,

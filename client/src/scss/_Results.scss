@@ -1,0 +1,16 @@
+.Results {
+
+  table {
+
+    tbody {
+
+      tr:first-child {
+        border: solid 2px red;
+
+        td {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+}

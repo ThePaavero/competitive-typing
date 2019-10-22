@@ -2,6 +2,7 @@ import React from 'react'
 import './App.scss'
 import GameFrame from './components/GameFrame'
 import PlayerList from './components/PlayerList'
+import Results from './components/Results'
 
 const url = 'ws://localhost:3030'
 
@@ -14,6 +15,7 @@ type PlayerObject = {
   progress: number,
   done: boolean,
   doneTimestamp: number,
+  fuckUps?: number,
 }
 
 type AppState = {
@@ -24,7 +26,7 @@ type AppState = {
   ready: boolean,
   playerNameManuallySet: boolean,
   playerName: string | null,
-  gameRunning: boolean,
+  showResults: boolean,
 }
 
 type ServerEvent = {
@@ -45,7 +47,7 @@ class App extends React.Component<AppProps, AppState> {
       ready: false,
       playerNameManuallySet: false,
       playerName: '',
-      gameRunning: true,
+      showResults: false,
     }
 
     this.sendToServer = this.sendToServer.bind(this)
@@ -94,8 +96,7 @@ class App extends React.Component<AppProps, AppState> {
         break
 
       case 'GAME_ENDED_SHOW_RESULTS':
-        this.setState({gameRunning: false})
-        window.alert('GAME OVER!')
+        this.setState({showResults: true})
         break
     }
   }
@@ -167,6 +168,13 @@ class App extends React.Component<AppProps, AppState> {
     console.log('DONE! @todo Do something?')
   }
 
+  sendFuckupToServer(fuckUps: number): void {
+    this.sendToServer({
+      type: 'SET_FUCKUPS',
+      data: fuckUps,
+    })
+  }
+
   onProgressChange(progress: number): void {
     this.sendToServer({
       type: 'SET_PROGRESS',
@@ -174,13 +182,16 @@ class App extends React.Component<AppProps, AppState> {
     })
   }
 
-  getGameFrame(): JSX.Element | null {
-    if (!this.state.gameRunning) {
-      return null
+  getGameFrame(): JSX.Element {
+    if (this.state.showResults) {
+      return <Results
+        players={this.state.players}
+        playerName={this.state.playerName}/>
     }
     return this.everyPlayerReady() ? (
       <GameFrame
         doOnDone={this.doOnDone.bind(this)}
+        sendFuckupToServer={this.sendFuckupToServer.bind(this)}
         onProgressChange={this.onProgressChange.bind(this)}
         text={this.state.text}/>
     ) : (
@@ -197,7 +208,9 @@ class App extends React.Component<AppProps, AppState> {
         {this.getSetPlayerNameButton()}
         {this.getGameFrame()}
         <div className="players">
-          <PlayerList players={this.state.players} playerName={this.state.playerName}/>
+          <PlayerList
+            players={this.state.players}
+            playerName={this.state.playerName}/>
         </div>
       </div>
     )

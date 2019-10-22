@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface PlayerListProps {
+interface ResultsProps {
   players: Array<PlayerObject>
   playerName: string | null
 }
@@ -9,39 +9,41 @@ type PlayerObject = {
   ready: boolean,
   name: string,
   progress: number,
+  doneTimestamp: number,
   fuckUps?: number,
 }
 
-class PlayerList extends React.Component<PlayerListProps> {
+class Results extends React.Component<ResultsProps> {
 
   playerIsPlayer(player: PlayerObject): boolean {
     return this.props.playerName === player.name
   }
 
   render(): JSX.Element {
-    const playerCount = this.props.players.length
+    let rank = 0
     return (
-      <div className="PlayerList">
-        <h2>{playerCount} player{playerCount > 1 ? 's' : ''} online{playerCount < 2 ? ' (It\'s just you)' : ''}</h2>
+      <div className="Results">
         <table>
           <thead>
           <tr>
+            <th>Rank</th>
             <th>Name</th>
-            <th>Ready</th>
-            <th>Progress</th>
+            <th>Fuck-ups</th>
+            <th>Slower than fastest</th>
           </tr>
           </thead>
           <tbody>
           {
             this.props.players.map((player: PlayerObject): JSX.Element => {
               const you = this.playerIsPlayer(player)
+              rank++
               return (
                 <tr key={player.name} className={you ? 'you' : ''}>
-                  <td>{player.name}{you ? ' (YOU)' : ''}</td>
-                  <td>{player.ready ? 'YES' : 'NO'}</td>
-                  <td className="progress-cell">
-                    <span style={{width: player.progress + '%'}}/>
-                    {player.progress}%
+                  <td>{rank}</td>
+                  <td>{player.name}</td>
+                  <td>{player.fuckUps}</td>
+                  <td>
+                    [todo: Time delta to fastest]
                   </td>
                 </tr>
               )
@@ -54,4 +56,4 @@ class PlayerList extends React.Component<PlayerListProps> {
   }
 }
 
-export default PlayerList
+export default Results

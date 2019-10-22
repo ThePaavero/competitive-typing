@@ -33,6 +33,7 @@ wss.on('connection', connection => {
     ready: false,
     done: false,
     doneTimestamp: null,
+    fuckUps: 0,
   }
 
   state.players.push(playerObject)
@@ -60,6 +61,11 @@ wss.on('connection', connection => {
         }
         console.log('Setting player name from "' + (player.name) + '" to "' + msg.data + '"')
         player.name = msg.data
+        broadcastNewPlayerData()
+        break
+
+      case 'SET_FUCKUPS':
+        player.fuckUps = msg.data
         broadcastNewPlayerData()
         break
 
@@ -125,6 +131,7 @@ const broadcastNewPlayerData = () => {
           ready: player.ready,
           done: player.done,
           doneTimestamp: player.doneTimestamp,
+          fuckUps: player.fuckUps,
         }
       }),
     })
