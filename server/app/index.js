@@ -90,6 +90,11 @@ wss.on('connection', connection => {
           player.done = true
           player.doneTimestamp = new Date().getTime()
 
+          // Are we the first to finish? If so, let the player know!
+          if (state.players.filter(p => p.done).length < 2) {
+            send(connection, {type: 'PLAYER_WINS'})
+          }
+
           // Are we the last to finish? If so, end the game and show the results.
           if (state.players.filter(p => p.done).length === state.players.length) {
             broadcastGameEndedResults()

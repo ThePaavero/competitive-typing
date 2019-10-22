@@ -18,15 +18,25 @@ class Results extends React.Component<ResultsProps> {
         <span className="winner">WINNER!</span>
       )
     }
+    let deltaToWinner: string | number = Math.round((player.doneTimestamp - winningTimestamp) / 1000)
+    if (deltaToWinner > 0) {
+      deltaToWinner = deltaToWinner + ' seconds slower than winner.'
+    } else {
+      deltaToWinner = '-'
+    }
     return (
       <div className="delta-to-fastest">
-        {Math.round((player.doneTimestamp - winningTimestamp) / 1000)} seconds slower than winner.
+        {deltaToWinner}
       </div>
     )
   }
 
   playerIsPlayer(player: PlayerObject): boolean {
     return this.props.playerName === player.name
+  }
+
+  rejoin(): void {
+    window.location.reload()
   }
 
   render(): JSX.Element {
@@ -60,6 +70,7 @@ class Results extends React.Component<ResultsProps> {
           }
           </tbody>
         </table>
+        <button onClick={this.rejoin}>Rejoin</button>
       </div>
     )
   }

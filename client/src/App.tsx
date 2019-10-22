@@ -18,6 +18,7 @@ type AppState = {
   playerNameManuallySet: boolean
   playerName: string | null
   showResults: boolean
+  playerWon: boolean
 }
 
 type ServerEvent = {
@@ -39,6 +40,7 @@ class App extends React.Component<AppProps, AppState> {
       playerNameManuallySet: false,
       playerName: '',
       showResults: false,
+      playerWon: false,
     }
 
     this.sendToServer = this.sendToServer.bind(this)
@@ -56,7 +58,7 @@ class App extends React.Component<AppProps, AppState> {
 
     connection.onclose = (e: any): any => {
       window.alert('Server was restarted, session lost. Refreshing.')
-      window.location.reload(true)
+      window.location.reload()
     }
 
     connection.onmessage = (event: ServerEvent): void => {
@@ -88,6 +90,13 @@ class App extends React.Component<AppProps, AppState> {
 
       case 'GAME_ENDED_SHOW_RESULTS':
         this.setState({showResults: true})
+        break
+
+      case 'PLAYER_WINS':
+        this.setState({
+          playerWon: true,
+          showResults: true,
+        })
         break
     }
   }
@@ -192,9 +201,21 @@ class App extends React.Component<AppProps, AppState> {
     )
   }
 
+  getOnWin(): JSX.Element | null {
+    if (!this.state.playerWon) {
+      return null
+    }
+    return (
+      <div className="player-won">
+        You won!
+      </div>
+    )
+  }
+
   render(): JSX.Element {
     return (
       <div className="App">
+        {this.getOnWin()}
         {this.getReadyButton()}
         {this.getSetPlayerNameButton()}
         {this.getGameFrame()}
