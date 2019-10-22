@@ -1,17 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
+import PlayerObject from './../types/PlayerObject'
 
 interface ResultsProps {
   players: Array<PlayerObject>
   playerName: string | null
-}
-
-type PlayerObject = {
-  ready: boolean,
-  name: string,
-  progress: number,
-  doneTimestamp: number,
-  fuckUps: number,
 }
 
 let winningTimestamp = 0

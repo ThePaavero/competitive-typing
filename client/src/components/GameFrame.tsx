@@ -2,18 +2,18 @@ import React from 'react'
 // import _ from 'lodash'
 
 type GameFrameProps = {
-  text: string,
-  doOnDone: Function,
-  onProgressChange: Function,
-  sendFuckupToServer: Function,
+  text: string
+  doOnDone: Function
+  onProgressChange: Function
+  sendFuckupToServer: Function
 }
 
 type GameFrameState = {
-  freezeTextarea: boolean,
-  errorsRunning: number,
-  playerText: string,
-  matchingTexts: boolean,
-  playerProgress: number,
+  freezeTextarea: boolean
+  errorsRunning: number
+  playerText: string
+  matchingTexts: boolean
+  playerProgress: number
 }
 
 class GameFrame extends React.Component<GameFrameProps, GameFrameState> {

@@ -1,15 +1,9 @@
 import React from 'react'
+import PlayerObject from './../types/PlayerObject'
 
 interface PlayerListProps {
   players: Array<PlayerObject>
   playerName: string | null
-}
-
-type PlayerObject = {
-  ready: boolean,
-  name: string,
-  progress: number,
-  fuckUps?: number,
 }
 
 class PlayerList extends React.Component<PlayerListProps> {

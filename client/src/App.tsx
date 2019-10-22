@@ -3,35 +3,26 @@ import './App.scss'
 import GameFrame from './components/GameFrame'
 import PlayerList from './components/PlayerList'
 import Results from './components/Results'
+import PlayerObject from './types/PlayerObject'
 
 const url = 'ws://localhost:3030'
 
 type AppProps = {}
 
-type PlayerObject = {
-  connection: object,
-  ready: boolean,
-  name: string,
-  progress: number,
-  done: boolean,
-  doneTimestamp: number,
-  fuckUps: number,
-}
-
 type AppState = {
-  text: string,
-  messages: Array<string>,
-  players: Array<PlayerObject>,
-  connection: any,
-  ready: boolean,
-  playerNameManuallySet: boolean,
-  playerName: string | null,
-  showResults: boolean,
+  text: string
+  messages: Array<string>
+  players: Array<PlayerObject>
+  connection: any
+  ready: boolean
+  playerNameManuallySet: boolean
+  playerName: string | null
+  showResults: boolean
 }
 
 type ServerEvent = {
-  type: string,
-  data: any,
+  type: string
+  data: any
 }
 
 class App extends React.Component<AppProps, AppState> {
