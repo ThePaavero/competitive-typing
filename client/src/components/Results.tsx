@@ -67,8 +67,7 @@ class Results extends React.Component<ResultsProps> {
           }
           </tbody>
         </table>
-      </
-        div>
+      </div>
     )
   }
 }
