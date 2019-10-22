@@ -24,6 +24,7 @@ type AppState = {
   ready: boolean,
   playerNameManuallySet: boolean,
   playerName: string | null,
+  gameRunning: boolean,
 }
 
 type ServerEvent = {
@@ -44,6 +45,7 @@ class App extends React.Component<AppProps, AppState> {
       ready: false,
       playerNameManuallySet: false,
       playerName: '',
+      gameRunning: true,
     }
 
     this.sendToServer = this.sendToServer.bind(this)
@@ -89,6 +91,11 @@ class App extends React.Component<AppProps, AppState> {
 
       case 'UPDATE_PLAYERS':
         this.setState({players: payload.data})
+        break
+
+      case 'GAME_ENDED_SHOW_RESULTS':
+        this.setState({gameRunning: false})
+        window.alert('GAME OVER!')
         break
     }
   }
@@ -167,7 +174,10 @@ class App extends React.Component<AppProps, AppState> {
     })
   }
 
-  getGameFrame(): JSX.Element {
+  getGameFrame(): JSX.Element | null {
+    if (!this.state.gameRunning) {
+      return null
+    }
     return this.everyPlayerReady() ? (
       <GameFrame
         doOnDone={this.doOnDone.bind(this)}

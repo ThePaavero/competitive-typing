@@ -83,7 +83,10 @@ class GameFrame extends React.Component<GameFrameProps, GameFrameState> {
     return (
       <div className="status-wrapper">
         <span>Fuck-ups: {this.state.errorsRunning}</span>
-        <span>Current status: {this.state.matchingTexts ? 'Full match!' : 'Not matching'}</span>
+        {
+          this.state.freezeTextarea ? '' :
+            <span>Current status: {this.state.matchingTexts ? 'Full match, keep going!' : 'You\'ve fucked something up, fix it!'}</span>
+        }
       </div>
     )
   }

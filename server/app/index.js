@@ -84,6 +84,10 @@ wss.on('connection', connection => {
           player.done = true
           player.doneTimestamp = new Date().getTime()
 
+          // Are we the last to finish? If so, end the game and show the results.
+          if (state.players.filter(p => p.done).length === state.players.length) {
+            broadcastGameEndedResults()
+          }
         }
         broadcastNewPlayerData()
         break
@@ -123,6 +127,15 @@ const broadcastNewPlayerData = () => {
           doneTimestamp: player.doneTimestamp,
         }
       }),
+    })
+  })
+}
+
+const broadcastGameEndedResults = () => {
+  state.players.forEach(playerObject => {
+    send(playerObject.connection, {
+      type: 'GAME_ENDED_SHOW_RESULTS',
+      data: null,
     })
   })
 }
