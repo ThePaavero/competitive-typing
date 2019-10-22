@@ -15,7 +15,7 @@ type PlayerObject = {
   progress: number,
   done: boolean,
   doneTimestamp: number,
-  fuckUps?: number,
+  fuckUps: number,
 }
 
 type AppState = {

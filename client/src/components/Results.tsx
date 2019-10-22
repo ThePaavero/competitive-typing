@@ -11,7 +11,7 @@ type PlayerObject = {
   name: string,
   progress: number,
   doneTimestamp: number,
-  fuckUps?: number,
+  fuckUps: number,
 }
 
 let winningTimestamp = 0
@@ -37,8 +37,8 @@ class Results extends React.Component<ResultsProps> {
   }
 
   render(): JSX.Element {
-    let rank = 0
-    const rankedPlayers = _.orderBy(this.props.players, ['doneTimestamp'], ['asc'])
+    let rank: number = 0
+    const rankedPlayers: Array<PlayerObject> = _.orderBy(this.props.players, ['doneTimestamp'], ['asc'])
     return (
       <div className="Results">
         <table>
@@ -53,7 +53,7 @@ class Results extends React.Component<ResultsProps> {
           <tbody>
           {
             rankedPlayers.map((player: PlayerObject): JSX.Element => {
-              const you = this.playerIsPlayer(player)
+              const you: boolean = this.playerIsPlayer(player)
               rank++
               return (
                 <tr key={player.name} className={you ? 'you' : ''}>
