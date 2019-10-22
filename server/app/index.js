@@ -166,7 +166,7 @@ const broadcastNewText = (text, singlePlayerConnection = null) => {
 }
 
 server.listen(port, () => {
-  console.log(`Socket server is listenting @ ws://localhost:${port}`)
+  console.log(`Socket server is listening @ ws://localhost:${port}`)
 })
 
 const send = (connection, data) => {
