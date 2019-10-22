@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 
 interface ResultsProps {
   players: Array<PlayerObject>
@@ -13,7 +14,23 @@ type PlayerObject = {
   fuckUps?: number,
 }
 
+let winningTimestamp = 0
+
 class Results extends React.Component<ResultsProps> {
+
+  getDeltaToFastestPlayer(player: PlayerObject, rank: number): JSX.Element {
+    if (rank === 1) {
+      winningTimestamp = player.doneTimestamp
+      return (
+        <span className="winner">WINNER!</span>
+      )
+    }
+    return (
+      <div className="delta-to-fastest">
+        {Math.round((player.doneTimestamp - winningTimestamp) / 1000)} seconds slower than winner.
+      </div>
+    )
+  }
 
   playerIsPlayer(player: PlayerObject): boolean {
     return this.props.playerName === player.name
@@ -21,6 +38,7 @@ class Results extends React.Component<ResultsProps> {
 
   render(): JSX.Element {
     let rank = 0
+    const rankedPlayers = _.orderBy(this.props.players, 'rank', 'desc')
     return (
       <div className="Results">
         <table>
@@ -34,7 +52,7 @@ class Results extends React.Component<ResultsProps> {
           </thead>
           <tbody>
           {
-            this.props.players.map((player: PlayerObject): JSX.Element => {
+            rankedPlayers.map((player: PlayerObject): JSX.Element => {
               const you = this.playerIsPlayer(player)
               rank++
               return (
@@ -42,16 +60,15 @@ class Results extends React.Component<ResultsProps> {
                   <td>{rank}</td>
                   <td>{player.name}</td>
                   <td>{player.fuckUps}</td>
-                  <td>
-                    [todo: Time delta to fastest]
-                  </td>
+                  <td>{this.getDeltaToFastestPlayer(player, rank)}</td>
                 </tr>
               )
             })
           }
           </tbody>
         </table>
-      </div>
+      </
+        div>
     )
   }
 }
