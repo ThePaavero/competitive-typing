@@ -38,8 +38,7 @@ class Results extends React.Component<ResultsProps> {
 
   render(): JSX.Element {
     let rank = 0
-    // @todo Rank by timestamp, not index :rolleyes.
-    const rankedPlayers = _.orderBy(this.props.players, ['rank'], ['asc'])
+    const rankedPlayers = _.orderBy(this.props.players, ['doneTimestamp'], ['asc'])
     return (
       <div className="Results">
         <table>
