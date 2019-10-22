@@ -18,9 +18,10 @@ class PlayerList extends React.Component<PlayerListProps> {
   }
 
   render(): JSX.Element {
+    const playerCount = this.props.players.length
     return (
       <div className="PlayerList">
-        <h2>{this.props.players.length} players online</h2>
+        <h2>{playerCount} player{playerCount > 1 ? 's' : ''} online{playerCount < 2 ? ' (It\'s just you)' : ''}</h2>
         <table>
           <thead>
           <tr>
